@@ -9,9 +9,13 @@ int timeLetter = timeDash;
 int timeWord = 7*timeunit;
 
 void setup() {
+
 Serial.begin(9600);
+Serial1.begin(9600);
 pinMode(pinActive, OUTPUT); //Set pin as an output
 digitalWrite(pinActive, LOW);
+Serial1.write("WELCOME?TO?UOM?");
+
 }
 
 void morseWord(){
@@ -31,7 +35,6 @@ void morseDash(){
   digitalWrite(pinActive,LOW);
   delay(timeunit);
 }
-
 
 void morseA() { //morse code for letter A
   morseDot();
@@ -195,14 +198,19 @@ void morseZ(){
 
 void loop() {
 
-  if (Serial.available() > 0) { //wait here for input or until timeout
-    Serial.println("Please enter a sentence, please end each word with a ?, for example: Hello?World? ");
+  if (Serial.available() > 0 && Serial1.available() == 0) { //wait here for input or until timeout
     stringIn = Serial.readString(); //read serial input string
     stringIn.trim(); //get rid of string delimiter
     Serial.println("String input is: " + stringIn);
   }
+  else if (Serial1.available() > 0 && Serial.available() == 0){
+    stringIn = Serial1.readString();
+    stringIn.trim(); //get rid of string delimiter
+    Serial.println("String input is: " + stringIn);
+  }
   else{
-  int i = 0; //Initialise counter
+    Serial.println(stringIn);
+    int i = 0; //Initialise counter
     for(i=0; i<stringIn.length(); i++){ //check every single letter in stringIn
       if(stringIn[i] == 'A'){
         morseA();

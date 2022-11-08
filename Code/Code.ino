@@ -14,6 +14,10 @@ pinMode(pinActive, OUTPUT); //Set pin as an output
 digitalWrite(pinActive, LOW);
 }
 
+void morseWord(){
+  delay(timeWord);
+}
+
 void morseDot(){ //Make a dot blink
   digitalWrite(pinActive, HIGH);
   delay(timeDot);
@@ -192,95 +196,98 @@ void morseZ(){
 void loop() {
 
   if (Serial.available() > 0) { //wait here for input or until timeout
+    Serial.println("Please enter a sentence, please end each word with a ?, for example: Hello?World? ");
     stringIn = Serial.readString(); //read serial input string
     stringIn.trim(); //get rid of string delimiter
-    Serial.println("String input is:" + stringIn);
+    Serial.println("String input is: " + stringIn);
   }
   else{
   int i = 0; //Initialise counter
     for(i=0; i<stringIn.length(); i++){ //check every single letter in stringIn
-      if(stringIn[i] == "A"){
+      if(stringIn[i] == 'A'){
         morseA();
         digitalWrite(pinActive, HIGH);
       }
-      else if(stringIn[i] == "B"){
+      else if(stringIn[i] == 'B'){
         morseB();
       }
-      else if(stringIn[i]== "C"){
+      else if(stringIn[i] == 'C'){
         morseC();
       }
-      else if(stringIn[i] == "D"){
+      else if(stringIn[i] == 'D'){
         morseD();
       }
-      else if(stringIn[i] == "E"){
+      else if(stringIn[i] == 'E'){
         morseE();
       }
-      else if(stringIn[i] == "F"){
+      else if(stringIn[i] == 'F'){
         morseF();
       }
-      else if(stringIn[i] == "G"){
+      else if(stringIn[i] == 'G'){
         morseG();
       }
-      else if(stringIn[i] == "H"){
+      else if(stringIn[i] == 'H'){
         morseH();
       }
-      else if(stringIn[i] == "I"){
+      else if(stringIn[i] == 'I'){
         morseI();
       }
-      else if(stringIn[i] == "J"){
+      else if(stringIn[i] == 'J'){
         morseJ();
       }
-      else if(stringIn[i] == "K"){
+      else if(stringIn[i] == 'K'){
         morseK();
       }
-      else if(stringIn[i] == "L"){
+      else if(stringIn[i] == 'L'){
         morseL();
       }
-      else if(stringIn[i] == "M"){
+      else if(stringIn[i] == 'M'){
         morseM();
       }
-      else if(stringIn[i] == "N"){
+      else if(stringIn[i] == 'N'){
         morseN();
       }
-      else if(stringIn[i] == "O"){
+      else if(stringIn[i] == 'O'){
         morseO();
       }
-      else if(stringIn[i] == "P"){
+      else if(stringIn[i] == 'P'){
         morseP();
       }
-      else if(stringIn[i] == "Q"){
+      else if(stringIn[i] == 'Q'){
         morseQ();
       }
-      else if(stringIn[i] == "R"){
+      else if(stringIn[i] == 'R'){
         morseR();
       }
-      else if(stringIn[i] == "S"){
+      else if(stringIn[i] == 'S'){
         morseS();
-        Serial.println("here");
       }
-      else if(stringIn[i] == "T"){
+      else if(stringIn[i] == 'T'){
         morseT();
       }
-      else if(stringIn[i] == "U"){
+      else if(stringIn[i] == 'U'){
         morseU();
       }
-      else if(stringIn[i] == "V"){
+      else if(stringIn[i] == 'V'){
         morseV();
       }
-      else if(stringIn[i] == "W"){
+      else if(stringIn[i] == 'W'){
         morseW();
       }
-      else if(stringIn[i] == "X"){
+      else if(stringIn[i] == 'X'){
         morseX();
       }
-      else if(stringIn[i] == "Y"){
+      else if(stringIn[i] == 'Y'){
         morseY();
       }
-      else if(stringIn[i] == "Z"){
+      else if(stringIn[i] == 'Z'){
         morseZ();
       }
+      else if(stringIn[i] == '?'){
+        morseWord();
+      }
       else{
-      
+        
       }
     } 
   }

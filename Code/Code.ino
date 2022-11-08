@@ -1,8 +1,8 @@
 //Global Variables go Here
 
-int pinActive = 2; //Digital pin number
+int pinActive = 12; //Digital pin number
 String stringIn = ""; //initialise empty string
-int timeunit = 250; //Morse code time unit
+int timeunit = 100; //Morse code time unit
 int timeDot = timeunit;
 int timeDash = 3*timeunit;
 int timeLetter = timeDash;
@@ -203,7 +203,7 @@ void loop() {
     stringIn.trim(); //get rid of string delimiter
     Serial.println("String input is: " + stringIn);
   }
-  else if (Serial1.available() > 0 && Serial.available() == 0){
+  else if (Serial1.available() > 10 && Serial.available() == 0){
     stringIn = Serial1.readString();
     stringIn.trim(); //get rid of string delimiter
     Serial.println("String input is: " + stringIn);

@@ -1,8 +1,8 @@
 //Global Variables go Here
 
-int pinActive = 12; //Digital pin number
+int pinActive = 12; //Pin number
 String stringIn = ""; //initialise empty string
-int timeunit = 100; //Morse code time unit
+int timeunit = 100; //Morse code time unit, higher number means slower dots and dashes.
 int timeDot = timeunit;
 int timeDash = 3*timeunit;
 int timeLetter = timeDash;
@@ -10,14 +10,15 @@ int timeWord = 7*timeunit;
 
 void setup() {
 
-Serial.begin(9600);
-Serial1.begin(9600);
+Serial.begin(9600); //begin Serial comms with computer to allow user input of message
+Serial1.begin(9600); //Required for "Welcome to UOM" signal --- Ensure Pin 0 and Pin 1 are connected to each other ---
 pinMode(pinActive, OUTPUT); //Set pin as an output
-digitalWrite(pinActive, LOW);
-Serial1.write("WELCOME?TO?UOM?");
+digitalWrite(pinActive, LOW); //Set LED pin to LOW.
+Serial1.write("WELCOME?TO?UOM?"); //Initial Message
 
 }
 
+//Morse Dot and Dash timings
 void morseWord(){
   delay(timeWord);
 }
@@ -29,19 +30,20 @@ void morseDot(){ //Make a dot blink
   delay(timeunit);
 }
 
-void morseDash(){
+void morseDash(){ //Make a dash blink
   digitalWrite(pinActive,HIGH);
   delay(timeDash);
   digitalWrite(pinActive,LOW);
   delay(timeunit);
 }
 
-void morseA() { //morse code for letter A
+// Morse Alphabet. 
+void morseA() { 
   morseDot();
   morseDash();
 }
 
-void morseB(){ //morse code for letter B
+void morseB(){ 
   morseDash();
   morseDot();
   morseDot();
@@ -198,23 +200,22 @@ void morseZ(){
 
 void loop() {
 
-  if (Serial.available() > 0 && Serial1.available() == 0) { //wait here for input or until timeout
-    stringIn = Serial.readString(); //read serial input string
+  if (Serial.available() > 0 || Serial1.available() == 0) { // Checks if there is a serial message in bufffer of Serial or if there is nothing in Serial1
+    stringIn = Serial.readString(); //read serial input string 
     stringIn.trim(); //get rid of string delimiter
     Serial.println("String input is: " + stringIn);
   }
-  else if (Serial1.available() > 10 && Serial.available() == 0){
-    stringIn = Serial1.readString();
+  else if (Serial1.available() > 10 && Serial.available() == 0){ //Only reads the OG message if there are more than 10 bytes to read to limit rando noise
+    stringIn = Serial1.readString(); //Read the initial message
     stringIn.trim(); //get rid of string delimiter
     Serial.println("String input is: " + stringIn);
   }
   else{
-    Serial.println(stringIn);
-    int i = 0; //Initialise counter
-    for(i=0; i<stringIn.length(); i++){ //check every single letter in stringIn
+    Serial.println(stringIn); //Prints into Serial the current active line - purely for debugging purposes
+    int i = 0; //Initialise counter because c++ is a fantastic bit of kit...
+    for(i=0; i<stringIn.length(); i++){ //check every single letter in stringIn and do corresponding morse code
       if(stringIn[i] == 'A'){
         morseA();
-        digitalWrite(pinActive, HIGH);
       }
       else if(stringIn[i] == 'B'){
         morseB();
@@ -295,8 +296,15 @@ void loop() {
         morseWord();
       }
       else{
-        
+        Serial.println("Please don't put numbers or random characters in. I haven't programmed it yet");
+        morseE();//Just for fun if the letters don't match I do a break and make it spell out error
+        morseR();
+        morseR();
+        morseO();
+        morseR();
+        morseWord();
       }
-    } 
+    }
+
   }
 }
